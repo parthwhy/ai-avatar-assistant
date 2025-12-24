@@ -1,0 +1,36 @@
+# SAGE - Smart AI Desktop Assistant
+# Core Dependencies
+
+# AI and API clients
+groq>=0.4.1
+requests>=2.31.0
+openai>=1.0.0
+
+# Voice processing
+pvporcupine>=3.0.0
+SpeechRecognition>=3.10.0
+pyttsx3>=2.90
+pyaudio>=0.2.11
+
+# Desktop automation
+pyautogui>=0.9.54
+pyperclip>=1.8.2
+pynput>=1.7.6
+Pillow>=10.0.0
+
+# Configuration and utilities
+python-dotenv>=1.0.0
+pathlib2>=2.3.7
+
+# GUI (built-in with Python)
+# tkinter - included with Python standard library
+
+# Optional dependencies for enhanced features
+# psutil>=5.9.0  # For system information
+# opencv-python>=4.8.0  # For advanced computer vision
+# numpy>=1.24.0  # For numerical operations
+
+# Development and testing (optional)
+# pytest>=7.4.0
+# black>=23.0.0
+# flake8>=6.0.0

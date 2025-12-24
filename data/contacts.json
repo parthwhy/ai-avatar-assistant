@@ -1,0 +1,76 @@
+{
+  "contacts": {
+    "manager": {
+      "name": "John Manager",
+      "email": "manager@example.com",
+      "whatsapp": "Manager",
+      "role": "Manager"
+    },
+    "hr": {
+      "name": "Jane HR",
+      "email": "hr@example.com",
+      "whatsapp": "HR Jane",
+      "role": "HR Manager"
+    },
+    "boss": {
+      "name": "Michael Director",
+      "email": "director@example.com",
+      "whatsapp": "Boss",
+      "role": "Director"
+    },
+    "team_lead": {
+      "name": "Emily Lead",
+      "email": "teamlead@example.com",
+      "whatsapp": "Emily Team Lead",
+      "role": "Team Lead"
+    },
+    "john": {
+      "name": "John Doe",
+      "email": "john.doe@example.com",
+      "whatsapp": "John",
+      "role": "Friend"
+    },
+    "sarah": {
+      "name": "Sarah Smith",
+      "email": "sarah@example.com",
+      "whatsapp": "Sarah",
+      "role": "Friend"
+    },
+    "alex": {
+      "name": "Alex Johnson",
+      "email": "alex@example.com",
+      "whatsapp": "Alex",
+      "role": "Colleague"
+    },
+    "mom": {
+      "name": "Mom",
+      "email": "mom@family.com",
+      "whatsapp": "Mom",
+      "role": "Family"
+    },
+    "dad": {
+      "name": "Dad",
+      "email": "dad@family.com",
+      "whatsapp": "Dad",
+      "role": "Family"
+    }
+  },
+  "email_templates": {
+    "leave_request": {
+      "subject": "Leave Request - {dates}",
+      "body": "Dear {recipient_name},\n\nI would like to request leave from {start_date} to {end_date} for {reason}.\n\nI have ensured that my current projects are up to date and have briefed my team about any pending tasks.\n\nPlease let me know if you need any additional information.\n\nThank you for your consideration.\n\nBest regards,\n{sender_name}"
+    },
+    "sick_leave": {
+      "subject": "Sick Leave Request - {date}",
+      "body": "Dear {recipient_name},\n\nI am writing to inform you that I am unwell and will not be able to come to work today ({date}).\n\nI will keep you updated on my recovery and expect to return to work by {return_date}.\n\nThank you for your understanding.\n\nBest regards,\n{sender_name}"
+    },
+    "meeting_request": {
+      "subject": "Meeting Request - {topic}",
+      "body": "Dear {recipient_name},\n\nI would like to schedule a meeting to discuss {topic}.\n\nProposed time: {proposed_time}\nDuration: {duration}\nLocation/Platform: {location}\n\nPlease let me know if this time works for you or suggest an alternative.\n\nThank you.\n\nBest regards,\n{sender_name}"
+    },
+    "follow_up": {
+      "subject": "Follow-up: {topic}",
+      "body": "Dear {recipient_name},\n\nI wanted to follow up on {topic} that we discussed earlier.\n\n{details}\n\nPlease let me know if you need any additional information or if there are any updates.\n\nThank you.\n\nBest regards,\n{sender_name}"
+    }
+  }
+}

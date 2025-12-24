@@ -1,0 +1,40 @@
+{
+  "name": "morning",
+  "description": "Morning routine - Opens VS Code, Spotify, sets brightness to 50%, and opens Stack Overflow",
+  "steps": [
+    {
+      "action": "set_brightness",
+      "params": {"level": 50}
+    },
+    {
+      "action": "open_app",
+      "params": {"app": "VS Code"}
+    },
+    {
+      "action": "wait",
+      "params": {"seconds": 2}
+    },
+    {
+      "action": "open_app",
+      "params": {"app": "Spotify"}
+    },
+    {
+      "action": "wait",
+      "params": {"seconds": 1}
+    },
+    {
+      "action": "open_url",
+      "params": {"url": "https://stackoverflow.com"}
+    },
+    {
+      "action": "disable_notifications",
+      "params": {}
+    },
+    {
+      "action": "notify",
+      "params": {"message": "Good morning! Your workspace is ready."}
+    }
+  ],
+  "created": "2024-01-01T00:00:00",
+  "is_preset": true
+}

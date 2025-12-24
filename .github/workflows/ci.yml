@@ -1,0 +1,239 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  test:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [windows-latest, ubuntu-latest, macos-latest]
+        python-version: ['3.10', '3.11', '3.12']
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v4
+      with:
+        python-version: ${{ matrix.python-version }}
+
+    - name: Cache pip dependencies
+      uses: actions/cache@v3
+      with:
+        path: ~/.cache/pip
+        key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}
+        restore-keys: |
+          ${{ runner.os }}-pip-
+
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+
+    - name: Lint with flake8
+      run: |
+        pip install flake8
+        # Stop the build if there are Python syntax errors or undefined names
+        flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
+        # Exit-zero treats all errors as warnings
+        flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
+
+    - name: Test imports
+      run: |
+        python -c "import sys; print('Python version:', sys.version)"
+        python -c "from config.settings import settings; print('Settings loaded')"
+        python -c "from core.orchestrator import OrchestratorAgent; print('Orchestrator imported')"
+        python -c "from voice.tts import speak; print('TTS imported')"
+
+    - name: Check file structure
+      run: |
+        python -c "
+        import os
+        required_files = [
+            'main.py', 'requirements.txt', 'README.md',
+            'config/settings.py', 'core/orchestrator.py',
+            'tools/system/__init__.py', 'voice/tts.py'
+        ]
+        for file in required_files:
+            if not os.path.exists(file):
+                raise FileNotFoundError(f'Required file missing: {file}')
+        print('All required files present')
+        "
+
+  security-scan:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.11'
+
+    - name: Install security tools
+      run: |
+        pip install bandit safety
+
+    - name: Run Bandit security scan
+      run: |
+        bandit -r . -f json -o bandit-report.json || true
+
+    - name: Check dependencies for vulnerabilities
+      run: |
+        safety check --json --output safety-report.json || true
+
+    - name: Upload security reports
+      uses: actions/upload-artifact@v3
+      with:
+        name: security-reports
+        path: |
+          bandit-report.json
+          safety-report.json
+
+  code-quality:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.11'
+
+    - name: Install code quality tools
+      run: |
+        pip install black isort mypy
+
+    - name: Check code formatting with Black
+      run: |
+        black --check --diff .
+
+    - name: Check import sorting with isort
+      run: |
+        isort --check-only --diff .
+
+    - name: Type checking with mypy
+      run: |
+        mypy --ignore-missing-imports core/ tools/ voice/ || true
+
+  documentation:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Check documentation files
+      run: |
+        required_docs=(
+          "README.md"
+          "PROJECT_DESCRIPTION.md"
+          "CONTRIBUTING.md"
+          "CHANGELOG.md"
+          "SECURITY.md"
+          "LICENSE"
+        )
+        
+        for doc in "${required_docs[@]}"; do
+          if [ ! -f "$doc" ]; then
+            echo "Missing documentation file: $doc"
+            exit 1
+          fi
+        done
+        echo "All documentation files present"
+
+    - name: Validate README structure
+      run: |
+        python -c "
+        with open('README.md', 'r') as f:
+            content = f.read()
+        
+        required_sections = [
+            '# 🧠 SAGE',
+            '## ✨ Features',
+            '## 🚀 Installation',
+            '## 🎮 Usage',
+            '## 📦 Dependencies'
+        ]
+        
+        for section in required_sections:
+            if section not in content:
+                raise ValueError(f'Missing README section: {section}')
+        
+        print('README structure validated')
+        "
+
+  build-check:
+    runs-on: windows-latest
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.11'
+
+    - name: Test setup script
+      run: |
+        python setup.py || echo "Setup script completed with warnings"
+
+    - name: Verify installation
+      run: |
+        if (Test-Path "venv") {
+          Write-Host "Virtual environment created successfully"
+        } else {
+          Write-Host "Virtual environment creation failed"
+          exit 1
+        }
+
+    - name: Check configuration template
+      run: |
+        if (Test-Path ".env") {
+          Write-Host "Configuration file created"
+        } else {
+          Write-Host "Configuration file not created"
+          exit 1
+        }
+
+  release-check:
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Check version consistency
+      run: |
+        # Extract version from CHANGELOG.md
+        changelog_version=$(grep -m1 "## \[" CHANGELOG.md | sed 's/## \[\(.*\)\].*/\1/')
+        echo "Changelog version: $changelog_version"
+        
+        # Check if version is properly formatted
+        if [[ ! $changelog_version =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+          echo "Invalid version format in CHANGELOG.md"
+          exit 1
+        fi
+        
+        echo "Version format validated"
+
+    - name: Validate release readiness
+      run: |
+        # Check if all required files are present for release
+        release_files=(
+          "requirements.txt"
+          ".env.example"
+          "setup.py"
+          "LICENSE"
+          ".gitignore"
+        )
+        
+        for file in "${release_files[@]}"; do
+          if [ ! -f "$file" ]; then
+            echo "Missing release file: $file"
+            exit 1
+          fi
+        done
+        
+        echo "All release files present"

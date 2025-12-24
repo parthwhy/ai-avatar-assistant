@@ -1,0 +1,53 @@
+{
+    "name": "focus",
+    "description": "Focus mode - Closes distractions, sets optimal brightness, mutes audio, enables DND",
+    "steps": [
+        {
+            "action": "close_app",
+            "params": {
+                "app": "Discord"
+            }
+        },
+        {
+            "action": "close_app",
+            "params": {
+                "app": "Slack"
+            }
+        },
+        {
+            "action": "close_app",
+            "params": {
+                "app": "WhatsApp"
+            }
+        },
+        {
+            "action": "set_brightness",
+            "params": {
+                "level": 60
+            }
+        },
+        {
+            "action": "mute",
+            "params": {}
+        },
+        {
+            "action": "disable_notifications",
+            "params": {}
+        },
+        {
+            "action": "set_timer",
+            "params": {
+                "minutes": 25,
+                "name": "focus_timer"
+            }
+        },
+        {
+            "action": "notify",
+            "params": {
+                "message": "Focus mode activated. 25-minute timer started."
+            }
+        }
+    ],
+    "created": "2024-01-01T00:00:00",
+    "is_preset": true
+}

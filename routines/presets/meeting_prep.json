@@ -1,0 +1,48 @@
+{
+    "name": "meeting_prep",
+    "description": "Prepare for a meeting - Opens calendar, notes, closes distracting apps",
+    "steps": [
+        {
+            "action": "close_app",
+            "params": {
+                "app": "Spotify"
+            }
+        },
+        {
+            "action": "mute",
+            "params": {}
+        },
+        {
+            "action": "open_app",
+            "params": {
+                "app": "Outlook"
+            }
+        },
+        {
+            "action": "wait",
+            "params": {
+                "seconds": 2
+            }
+        },
+        {
+            "action": "open_app",
+            "params": {
+                "app": "OneNote"
+            }
+        },
+        {
+            "action": "set_brightness",
+            "params": {
+                "level": 70
+            }
+        },
+        {
+            "action": "notify",
+            "params": {
+                "message": "Meeting prep complete. You're ready!"
+            }
+        }
+    ],
+    "created": "2024-01-01T00:00:00",
+    "is_preset": true
+}

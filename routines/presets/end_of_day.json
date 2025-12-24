@@ -1,0 +1,54 @@
+{
+    "name": "end_of_day",
+    "description": "End of day routine - Closes work apps, lowers brightness, opens music",
+    "steps": [
+        {
+            "action": "close_app",
+            "params": {
+                "app": "VS Code"
+            }
+        },
+        {
+            "action": "close_app",
+            "params": {
+                "app": "Teams"
+            }
+        },
+        {
+            "action": "close_app",
+            "params": {
+                "app": "Outlook"
+            }
+        },
+        {
+            "action": "set_brightness",
+            "params": {
+                "level": 30
+            }
+        },
+        {
+            "action": "unmute",
+            "params": {}
+        },
+        {
+            "action": "set_volume",
+            "params": {
+                "level": 40
+            }
+        },
+        {
+            "action": "open_app",
+            "params": {
+                "app": "Spotify"
+            }
+        },
+        {
+            "action": "notify",
+            "params": {
+                "message": "Work day ended. Time to relax!"
+            }
+        }
+    ],
+    "created": "2024-01-01T00:00:00",
+    "is_preset": true
+}
