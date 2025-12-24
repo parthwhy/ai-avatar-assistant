@@ -34,15 +34,9 @@
 
 <div align="center">
 
-<!-- Add your screenshots here -->
-<!-- Example layout: -->
-<!-- 
-| Main Interface | Voice Command | Task Execution |
-|:---:|:---:|:---:|
-| ![Main](assets/screenshot-main.png) | ![Voice](assets/screenshot-voice.png) | ![Task](assets/screenshot-task.png) |
--->
+![SAGE Interface](assets/image.png)
 
-> 🖼️ **Screenshots coming soon!** Add screenshots of the SAGE interface here.
+*SAGE Particle UI with voice control and text input*
 
 </div>
 
